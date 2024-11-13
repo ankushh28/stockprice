@@ -1,10 +1,19 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import requests
 from bs4 import BeautifulSoup
 
 app = FastAPI()
 
-@app.get("/stock-price/")
+origins = ["*"]
+app.add_middleware(
+ CORSMiddleware,
+ allow_origins=origins,
+ allow_credentials=True,
+ allow_methods=["*"],
+ allow_headers=["*"],
+)
+@app.get("/api/stock-price/")
 def get_stock_price(ticker: str, exchange: str):
     try:
         url = f'https://www.google.com/finance/quote/{ticker}:{exchange}'
